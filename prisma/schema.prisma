@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Core Notification Intent
+
+model Notification {
+  id String @id @default(uuid())
+
+  userId String
+
+  externalId String? @unique
+
+  eventType String
+
+  priority Priority @default(MEDIUM)
+
+  payload Json
+
+  deliveries Delivery[]
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// Individual Delivery per Channel
+
+model Delivery {
+  id String @id @default(uuid())
+
+  notificationId String
+
+  notification Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+
+  channel      Channel
+  status       Status    @default(PENDING)
+  provider     String?
+  providerId   String?
+  errorDetails String?
+  errorCode    String?
+  retryCount   Int       @default(0)
+  sentAt       DateTime?
+  readAt       DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([notificationId, channel])
+  @@index([notificationId])
+  @@index([status])
+}
+
+// User Preferences
+
+model UserPreference {
+  id        String        @id @default(uuid())
+  userId    String        @unique
+  channels  UserChannel[]
+  updatedAt DateTime      @updatedAt
+
+  @@index([userId])
+}
+
+model UserChannel {
+  id String @id @default(uuid())
+
+  userPreferenceId String
+
+  userPreference UserPreference @relation(fields: [userPreferenceId], references: [id], onDelete: Cascade)
+
+  channel   Channel
+  isEnabled Boolean  @default(true)
+  updatedAt DateTime @updatedAt
+
+  @@unique([userPreferenceId, channel])
+}
+
+// ENUMS
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum Channel {
+  EMAIL
+  SMS
+  PUSH
+  IN_APP
+}
+
+enum Status {
+  PENDING
+  QUEUED
+  SENT
+  DELIVERED
+  FAILED
+  READ
+}
