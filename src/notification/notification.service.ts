@@ -34,4 +34,22 @@ export class NotificationService {
       }
     });
   }
+
+  async findAll() {
+    return this.prisma.notification.findMany({
+      include: {
+        deliveries: true,
+      },
+    });
+  }
+
+  async findOne(id: string) {
+    return this.prisma.notification.findUnique({
+      where: { id },
+      include: {
+        deliveries: true,
+      },
+    });
+  }
+
 }
