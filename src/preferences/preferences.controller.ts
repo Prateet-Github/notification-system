@@ -11,4 +11,17 @@ export class PreferencesController {
   create(@Body() dto: CreatePreferenceDto) {
     return this.preferencesService.create(dto);
   }
+
+  @Get(':userId')
+  findByUserId(@Param('userId') userId: string) {
+    return this.preferencesService.findByUserId(userId);
+  }
+
+  @Patch(':userId')
+  update(
+    @Param('userId') userId: string,
+    @Body() dto: UpdatePreferenceDto,
+  ) {
+    return this.preferencesService.update(userId, dto);
+  }
 }

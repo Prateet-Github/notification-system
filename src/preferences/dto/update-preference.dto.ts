@@ -1,4 +1,6 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreatePreferenceDto } from './create-preference.dto';
-
-export class UpdatePreferenceDto extends PartialType(CreatePreferenceDto) {}
+export class UpdatePreferenceDto {
+  email!: boolean;
+  sms!: boolean;
+  push!: boolean;
+  inApp!: boolean;
+}

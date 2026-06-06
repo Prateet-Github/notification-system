@@ -40,4 +40,51 @@ export class PreferencesService {
       },
     });
   }
+
+  async findByUserId(userId: string) {
+    return this.prisma.userPreference.findUnique({
+      where: {
+        userId,
+      },
+      include: {
+        channels: true,
+      },
+    });
+  }
+
+  async update(userId: string, dto: UpdatePreferenceDto) {
+    const preference = await this.prisma.userPreference.findUnique({
+      where: {
+        userId,
+      },
+      include: {
+        channels: true,
+      },
+    });
+
+    if (!preference) {
+      throw new Error('Preferences not found');
+    }
+
+    for (const channel of preference.channels) {
+      await this.prisma.userChannel.update({
+        where: {
+          id: channel.id,
+        },
+        data: {
+          isEnabled:
+            channel.channel === 'EMAIL'
+              ? dto.email
+              : channel.channel === 'SMS'
+                ? dto.sms
+                : channel.channel === 'PUSH'
+                  ? dto.push
+                  : dto.inApp,
+        },
+      });
+    }
+
+    return this.findByUserId(userId);
+  }
+
 }
