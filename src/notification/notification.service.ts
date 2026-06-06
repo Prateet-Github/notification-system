@@ -4,7 +4,7 @@ import { CreateNotificationDto } from './dto/create-notification.dto';
 
 @Injectable()
 export class NotificationService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(dto: CreateNotificationDto) {
     return this.prisma.notification.create({
@@ -13,7 +13,25 @@ export class NotificationService {
         eventType: dto.eventType,
         priority: dto.priority,
         payload: dto.payload,
+        deliveries: {
+          create: [
+            { channel: 'EMAIL' },
+            { channel: 'SMS' },
+            { channel: 'PUSH' },
+            { channel: 'IN_APP' },
+          ]
+        }
       },
+      include: {
+        deliveries: {
+          select: {
+            id: true,
+            channel: true,
+            status: true,
+          },
+        },
+
+      }
     });
   }
 }
