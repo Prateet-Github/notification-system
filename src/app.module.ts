@@ -5,6 +5,8 @@ import { PrismaModule } from './prisma/prisma.module';
 import { NotificationModule } from './notification/notification.module';
 import { PreferencesModule } from './preferences/preferences.module';
 import { QueueModule } from './queue/queue.module';
+import { WorkersModule } from './workers/workers.module';
+import { ProvidersModule } from './providers/providers.module';
 import configuration from './config/env.config';
 
 @Module({
@@ -18,6 +20,8 @@ import configuration from './config/env.config';
     NotificationModule,
     PreferencesModule,
     QueueModule,
+    WorkersModule,
+    ProvidersModule,
 
   ]
 })
