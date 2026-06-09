@@ -29,6 +29,41 @@ export class QueueRouterService {
       PRIORITIES[priority as keyof typeof PRIORITIES] ??
       PRIORITIES.LOW;
 
-    // TODO: Which queue? With what priority?
+    switch (channel) {
+      case 'EMAIL':
+        await this.emailQueue.add(
+          'process-delivery',
+          { deliveryId },
+          { priority: queuePriority },
+        );
+        break;
+
+      case 'SMS':
+        await this.smsQueue.add(
+          'process-delivery',
+          { deliveryId },
+          { priority: queuePriority },
+        );
+        break;
+
+      case 'PUSH':
+        await this.pushQueue.add(
+          'process-delivery',
+          { deliveryId },
+          { priority: queuePriority },
+        );
+        break;
+
+      case 'IN_APP':
+        await this.inAppQueue.add(
+          'process-delivery',
+          { deliveryId },
+          { priority: queuePriority },
+        );
+        break;
+
+      default:
+        throw new Error(`Unsupported channel: ${channel}`);
+    }
   }
 }

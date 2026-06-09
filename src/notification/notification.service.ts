@@ -2,10 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { Channel } from '@prisma/client';
+import { QueueRouterService } from '../queue/queue-router.service';
 
 @Injectable()
 export class NotificationService {
-  constructor(private prisma: PrismaService) { }
+  constructor(
+    private prisma: PrismaService,
+    private queueRouter: QueueRouterService,
+  ) { }
 
   async create(dto: CreateNotificationDto) {
     const preference = await this.prisma.userPreference.findUnique({
@@ -29,7 +33,7 @@ export class NotificationService {
         { channel: Channel.IN_APP },
       ];
 
-    return this.prisma.notification.create({
+    const notification = await this.prisma.notification.create({
       data: {
         userId: dto.userId,
         eventType: dto.eventType,
@@ -45,6 +49,16 @@ export class NotificationService {
         deliveries: true,
       },
     });
+
+    for (const delivery of notification.deliveries) {
+      await this.queueRouter.route( // push to queue based on channel and priority as thin job with deliveryId
+        delivery.id,
+        delivery.channel,
+        notification.priority,
+      );
+    }
+
+    return notification;
   }
 
   async findAll() {
