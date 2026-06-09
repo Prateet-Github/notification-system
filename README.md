@@ -63,10 +63,10 @@ Work in Progress
 - Redis setup
 - BullMQ setup
 - Queue architecture design
+- Queue routing
 
 ### Next Steps
 
-- Queue routing
 - Workers
 - Channel providers
 - Retry mechanism
