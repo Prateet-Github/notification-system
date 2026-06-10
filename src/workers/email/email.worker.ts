@@ -1,4 +1,8 @@
-import { Processor, WorkerHost } from '@nestjs/bullmq';
+import {
+  Processor,
+  WorkerHost,
+  OnWorkerEvent,
+} from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
 import { Job } from 'bullmq';
 
@@ -17,6 +21,24 @@ export class EmailWorker extends WorkerHost {
   async process(job: Job<{ deliveryId: string }>): Promise<void> {
     await this.emailService.processDelivery(
       job.data.deliveryId,
+    );
+  }
+
+  @OnWorkerEvent('completed')
+  onCompleted(job: Job) {
+    console.log(
+      `Email job ${job.id} completed`,
+    );
+  }
+
+  @OnWorkerEvent('failed')
+  onFailed(job: Job | undefined, error: Error) {
+    console.error(
+      `Email job ${job?.id} failed: ${error.message}`,
+    );
+
+    console.log(
+      `Attempts made: ${job?.attemptsMade}`,
     );
   }
 }

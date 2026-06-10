@@ -34,7 +34,14 @@ export class QueueRouterService {
         await this.emailQueue.add(
           'process-delivery',
           { deliveryId },
-          { priority: queuePriority },
+          {
+            priority: queuePriority,
+            attempts: 3,
+            backoff: {
+              type: 'exponential',
+              delay: 2000,
+            }
+          },
         );
         break;
 

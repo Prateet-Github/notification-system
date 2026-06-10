@@ -10,21 +10,24 @@ export class EmailService {
   ) { }
 
   async processDelivery(deliveryId: string) {
-    await this.prisma.delivery.update({
-      where: {
-        id: deliveryId,
-      },
-      data: {
-        status: Status.SENT,
-      },
-    });
+    try {
+      // Simulate provider call
 
-    const delivery = await this.prisma.delivery.findUnique({
-      where: {
-        id: deliveryId,
-      },
-    });
+      throw new Error('Simulated email failure');
 
-    console.log('Email delivery processed:', delivery);
+      await this.prisma.delivery.update({
+        where: {
+          id: deliveryId,
+        },
+        data: {
+          status: Status.SENT,
+        },
+      });
+
+      console.log(`Delivery ${deliveryId} sent`);
+    } catch (error) {
+      // console.error(`Delivery ${deliveryId} failed`, error);
+      throw error;
+    }
   }
 }
