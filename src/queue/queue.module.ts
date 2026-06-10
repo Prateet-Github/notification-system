@@ -3,9 +3,12 @@ import { BullModule } from '@nestjs/bullmq';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { QUEUES } from './constants';
 import { QueueRouterService } from './queue-router.service';
+import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
   imports: [
+    PrismaModule,
+
     BullModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -30,4 +33,5 @@ import { QueueRouterService } from './queue-router.service';
 
   exports: [QueueRouterService],
 })
+
 export class QueueModule { }

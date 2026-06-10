@@ -13,6 +13,29 @@ export class EmailService {
   ) { }
 
   async processDelivery(deliveryId: string) {
+    const delivery = await this.prisma.delivery.findUnique({
+      where: {
+        id: deliveryId,
+      },
+    });
+
+    if (!delivery) {
+      throw new Error('Delivery not found');
+    }
+
+    if (delivery.status === Status.SENT) {
+      return;
+    }
+
+    await this.prisma.delivery.update({
+      where: {
+        id: deliveryId,
+      },
+      data: {
+        status: Status.PROCESSING,
+      },
+    });
+
     await this.emailProvider.send(
       'test@example.com',
       'Order Placed',

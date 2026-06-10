@@ -3,10 +3,15 @@ import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { PRIORITIES } from './constants';
 import { QUEUES } from './constants';
+import { PrismaService } from '../prisma/prisma.service';
+import { Status } from '@prisma/client';
 
 @Injectable()
 export class QueueRouterService {
   constructor(
+
+    private readonly prisma: PrismaService,
+
     @InjectQueue(QUEUES.EMAIL)
     private readonly emailQueue: Queue,
 
@@ -28,6 +33,15 @@ export class QueueRouterService {
     const queuePriority =
       PRIORITIES[priority as keyof typeof PRIORITIES] ??
       PRIORITIES.LOW;
+
+    await this.prisma.delivery.update({
+      where: {
+        id: deliveryId,
+      },
+      data: {
+        status: Status.QUEUED,
+      },
+    });
 
     switch (channel) {
       case 'EMAIL':

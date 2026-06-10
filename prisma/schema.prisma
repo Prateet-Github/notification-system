@@ -101,6 +101,7 @@ enum Channel {
 enum Status {
   PENDING
   QUEUED
+  PROCESSING
   SENT
   DELIVERED
   FAILED
