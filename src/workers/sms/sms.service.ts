@@ -1,16 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
-
 import { PrismaService } from '../../prisma/prisma.service';
-import { EmailProvider } from '@/providers/email/email.provider';
+import { SmsProvider } from '@/providers/sms/sms.provider';
 import { BaseDeliveryService } from '../base/base-delivery.worker';
 
 @Injectable()
-export class EmailService extends BaseDeliveryService {
+export class SmsService extends BaseDeliveryService {
   constructor(
     prisma: PrismaService,
 
-    @Inject(EmailProvider)
-    private readonly emailProvider: EmailProvider,
+    @Inject(SmsProvider)
+    private readonly smsProvider: SmsProvider,
   ) {
     super(prisma);
   }
@@ -24,9 +23,9 @@ export class EmailService extends BaseDeliveryService {
       return;
     }
 
-    await this.emailProvider.send(
-      'test@example.com',
-      'Order Placed Email',
+    await this.smsProvider.send(
+      '+1234567890',
+      'Order Placed SMS',
       'Your order has been placed.',
     );
 
