@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { SmsProvider } from '@/providers/sms/sms.provider';
-import { BaseDeliveryService } from '../base/base-delivery.worker';
+import { BaseDeliveryService } from '../base/base-delivery.service';
 
 @Injectable()
 export class SmsService extends BaseDeliveryService {

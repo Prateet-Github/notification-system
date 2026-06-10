@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import { PrismaService } from '../../prisma/prisma.service';
 import { EmailProvider } from '@/providers/email/email.provider';
-import { BaseDeliveryService } from '../base/base-delivery.worker';
+import { BaseDeliveryService } from '../base/base-delivery.service';
 
 @Injectable()
 export class EmailService extends BaseDeliveryService {

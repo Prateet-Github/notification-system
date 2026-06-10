@@ -43,19 +43,21 @@ export class QueueRouterService {
       },
     });
 
+    const jobOptions = {
+      priority: queuePriority,
+      attempts: 3,
+      backoff: {
+        type: 'exponential',
+        delay: 2000,
+      },
+    };
+
     switch (channel) {
       case 'EMAIL':
         await this.emailQueue.add(
           'process-delivery',
           { deliveryId },
-          {
-            priority: queuePriority,
-            attempts: 3,
-            backoff: {
-              type: 'exponential',
-              delay: 2000,
-            }
-          },
+          jobOptions,
         );
         break;
 
@@ -63,14 +65,7 @@ export class QueueRouterService {
         await this.smsQueue.add(
           'process-delivery',
           { deliveryId },
-          {
-            priority: queuePriority,
-            attempts: 3,
-            backoff: {
-              type: 'exponential',
-              delay: 2000,
-            },
-          },
+          jobOptions,
         );
         break;
 
@@ -78,14 +73,7 @@ export class QueueRouterService {
         await this.pushQueue.add(
           'process-delivery',
           { deliveryId },
-          {
-            priority: queuePriority,
-            attempts: 3,
-            backoff: {
-              type: 'exponential',
-              delay: 2000,
-            },
-          },
+          jobOptions,
         );
         break;
 
@@ -93,14 +81,7 @@ export class QueueRouterService {
         await this.inAppQueue.add(
           'process-delivery',
           { deliveryId },
-          {
-            priority: queuePriority,
-            attempts: 3,
-            backoff: {
-              type: 'exponential',
-              delay: 2000,
-            },
-          },
+          jobOptions,
         );
         break;
 

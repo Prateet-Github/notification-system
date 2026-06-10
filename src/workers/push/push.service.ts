@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import { PrismaService } from '../../prisma/prisma.service';
 import { PushProvider } from '@/providers/push/push.provider';
-import { BaseDeliveryService } from '../base/base-delivery.worker';
+import { BaseDeliveryService } from '../base/base-delivery.service';
 
 @Injectable()
 export class PushService extends BaseDeliveryService {
