@@ -1,18 +1,23 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Status } from '@prisma/client';
-
 import { PrismaService } from '../../prisma/prisma.service';
+import { EmailProvider } from '@/providers/email/email.provider';
 
 @Injectable()
 export class EmailService {
   constructor(
     private readonly prisma: PrismaService,
+
+    @Inject(EmailProvider)
+    private readonly emailProvider: EmailProvider,
   ) { }
 
   async processDelivery(deliveryId: string) {
-    // simulate provider call
-
-    // throw new Error('Simulated email failure'); // test retry logic
+    await this.emailProvider.send(
+      'test@example.com',
+      'Order Placed',
+      'Your order has been placed.',
+    );
 
     await this.prisma.delivery.update({
       where: {
@@ -20,6 +25,7 @@ export class EmailService {
       },
       data: {
         status: Status.SENT,
+        sentAt: new Date(),
       },
     });
   }

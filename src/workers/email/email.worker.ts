@@ -35,29 +35,23 @@ export class EmailWorker extends WorkerHost {
   }
 
   @OnWorkerEvent('failed')
-  async onFailed(
-    job: Job | undefined,
-    error: Error,
-  ) {
-    console.error(
-      `Email job ${job?.id} failed: ${error.message}`,
-    );
+  async onFailed(job: Job, error: Error) {
+    await this.prisma.delivery.update({
+      where: {
+        id: job.data.deliveryId,
+      },
+      data: {
+        retryCount: job.attemptsMade,
+      },
+    });
 
-    console.log(
-      `Attempts made: ${job?.attemptsMade}`,
-    );
-
-    if (
-      job &&
-      job.attemptsMade === job.opts.attempts
-    ) {
+    if (job.attemptsMade >= (job.opts.attempts ?? 1)) {
       await this.prisma.delivery.update({
         where: {
           id: job.data.deliveryId,
         },
         data: {
           status: Status.FAILED,
-          retryCount: job.attemptsMade,
         },
       });
 
