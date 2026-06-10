@@ -10,24 +10,17 @@ export class EmailService {
   ) { }
 
   async processDelivery(deliveryId: string) {
-    try {
-      // Simulate provider call
+    // simulate provider call
 
-      throw new Error('Simulated email failure');
+    // throw new Error('Simulated email failure'); // test retry logic
 
-      await this.prisma.delivery.update({
-        where: {
-          id: deliveryId,
-        },
-        data: {
-          status: Status.SENT,
-        },
-      });
-
-      console.log(`Delivery ${deliveryId} sent`);
-    } catch (error) {
-      // console.error(`Delivery ${deliveryId} failed`, error);
-      throw error;
-    }
+    await this.prisma.delivery.update({
+      where: {
+        id: deliveryId,
+      },
+      data: {
+        status: Status.SENT,
+      },
+    });
   }
 }
