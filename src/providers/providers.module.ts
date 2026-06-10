@@ -5,6 +5,9 @@ import { FakeEmailProvider } from './email/fake-email.provider';
 import { SmsProvider } from './sms/sms.provider';
 import { FakeSmsProvider } from './sms/fake-sms.provider';
 
+import { PushProvider } from './push/push.provider';
+import { FakePushProvider } from './push/fake-push.provider';
+
 @Module({
   providers: [
     {
@@ -15,7 +18,11 @@ import { FakeSmsProvider } from './sms/fake-sms.provider';
       provide: SmsProvider,
       useClass: FakeSmsProvider,
     },
+    {
+      provide: PushProvider,
+      useClass: FakePushProvider,
+    },
   ],
-  exports: [EmailProvider, SmsProvider],
+  exports: [EmailProvider, SmsProvider, PushProvider],
 })
 export class ProvidersModule { }

@@ -36,6 +36,14 @@ export class EmailWorker extends WorkerHost {
 
   @OnWorkerEvent('failed')
   async onFailed(job: Job, error: Error) {
+    console.log(
+      `Email job ${job.id} failed: ${error.message}`,
+    );
+
+    console.log(
+      `Attempts made: ${job.attemptsMade}`,
+    );
+
     await this.prisma.delivery.update({
       where: {
         id: job.data.deliveryId,

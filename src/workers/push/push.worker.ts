@@ -7,22 +7,22 @@ import { Injectable } from '@nestjs/common';
 import { Job } from 'bullmq';
 
 import { QUEUES } from '../../queue/constants';
-import { SmsService } from './sms.service';
+import { PushService } from './push.service';
 import { PrismaService } from '@/prisma/prisma.service';
 import { Status } from '@prisma/client';
 
 @Injectable()
-@Processor(QUEUES.SMS)
-export class SmsWorker extends WorkerHost {
+@Processor(QUEUES.PUSH)
+export class PushWorker extends WorkerHost {
   constructor(
-    private readonly smsService: SmsService,
+    private readonly pushService: PushService,
     private readonly prisma: PrismaService,
   ) {
     super();
   }
 
   async process(job: Job<{ deliveryId: string }>): Promise<void> {
-    await this.smsService.processDelivery(
+    await this.pushService.processDelivery(
       job.data.deliveryId,
     );
   }
@@ -30,14 +30,14 @@ export class SmsWorker extends WorkerHost {
   @OnWorkerEvent('completed')
   onCompleted(job: Job) {
     console.log(
-      `Sms job ${job.id} completed`,
+      `Push job ${job.id} completed`,
     );
   }
 
   @OnWorkerEvent('failed')
   async onFailed(job: Job, error: Error) {
     console.log(
-      `Sms job ${job.id} failed: ${error.message}`,
+      `Push job ${job.id} failed: ${error.message}`,
     );
 
     console.log(

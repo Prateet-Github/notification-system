@@ -78,7 +78,14 @@ export class QueueRouterService {
         await this.pushQueue.add(
           'process-delivery',
           { deliveryId },
-          { priority: queuePriority },
+          {
+            priority: queuePriority,
+            attempts: 3,
+            backoff: {
+              type: 'exponential',
+              delay: 2000,
+            },
+          },
         );
         break;
 
