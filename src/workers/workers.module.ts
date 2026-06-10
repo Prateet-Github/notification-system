@@ -12,6 +12,9 @@ import { SmsService } from './sms/sms.service';
 import { PushWorker } from './push/push.worker';
 import { PushService } from './push/push.service';
 
+import { InAppWorker } from './in-app/in-app.worker';
+import { InAppService } from './in-app/in-app.service';
+
 @Module({
   imports: [
     PrismaModule,
@@ -24,6 +27,8 @@ import { PushService } from './push/push.service';
     SmsService,
     PushWorker,
     PushService,
+    InAppWorker,
+    InAppService,
   ],
 })
 export class WorkersModule { }

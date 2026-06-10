@@ -64,11 +64,12 @@ Work in Progress
 - BullMQ setup
 - Queue architecture design
 - Queue routing
-
-### Next Steps
-
 - Workers
 - Channel providers
 - Retry mechanism
+
+### Next Steps
+
+- Providers
 - Dead Letter Queues (DLQ)
 - Observability & metrics
