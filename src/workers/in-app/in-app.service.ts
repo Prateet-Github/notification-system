@@ -24,11 +24,19 @@ export class InAppService extends BaseDeliveryService {
       return;
     }
 
-    await this.inAppProvider.send(
+    const result = await this.inAppProvider.send(
       'test@example.com',
       'Order Placed In-App Message',
       'Your order has been placed.',
     );
+
+    await this.prisma.delivery.update({
+      where: { id: deliveryId },
+      data: {
+        provider: result.provider,
+        providerId: result.providerId,
+      },
+    });
 
     await this.markSent(deliveryId);
   }

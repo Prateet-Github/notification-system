@@ -3,5 +3,9 @@ export abstract class InAppProvider {
     to: string,
     subject: string,
     body: string,
-  ): Promise<void>;
+  ): Promise<
+  {
+    provider: string;
+    providerId: string;
+  }>;
 }
