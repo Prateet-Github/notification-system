@@ -24,11 +24,19 @@ export class PushService extends BaseDeliveryService {
       return;
     }
 
-    await this.pushProvider.send(
+    const result = await this.pushProvider.send(
       'test@example.com',
       'Order Placed Push',
       'Your order has been placed.',
     );
+
+    await this.prisma.delivery.update({
+      where: { id: deliveryId },
+      data: {
+        provider: result.provider,
+        providerId: result.providerId,
+      },
+    });
 
     await this.markSent(deliveryId);
   }

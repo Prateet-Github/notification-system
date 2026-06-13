@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PushProvider } from './push.provider';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class FakePushProvider implements PushProvider {
@@ -7,7 +8,11 @@ export class FakePushProvider implements PushProvider {
     to: string,
     subject: string,
     body: string,
-  ): Promise<void> {
+  ): Promise<
+    {
+      provider: string;
+      providerId: string;
+    }> {
     console.log('Sending fake push...');
     console.log({ to, subject, body });
 
@@ -18,5 +23,10 @@ export class FakePushProvider implements PushProvider {
     }
 
     console.log('Fake push sent successfully');
+
+    return {
+      provider: 'FakePushProvider',
+      providerId: randomUUID(),
+    };
   }
 }
