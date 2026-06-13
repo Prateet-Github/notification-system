@@ -23,11 +23,19 @@ export class SmsService extends BaseDeliveryService {
       return;
     }
 
-    await this.smsProvider.send(
+    const result = await this.smsProvider.send(
       '+1234567890',
       'Order Placed SMS',
       'Your order has been placed.',
     );
+
+    await this.prisma.delivery.update({
+      where: { id: deliveryId },
+      data: {
+        provider: result.provider,
+        providerId: result.providerId,
+      },
+    });
 
     await this.markSent(deliveryId);
   }
