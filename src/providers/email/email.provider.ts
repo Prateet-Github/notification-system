@@ -3,5 +3,8 @@ export abstract class EmailProvider {
     to: string,
     subject: string,
     body: string,
-  ): Promise<void>;
+  ): Promise<{
+    provider: string;
+    providerId: string;
+  }>;
 }

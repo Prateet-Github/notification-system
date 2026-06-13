@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { EmailProvider } from './email.provider';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class FakeEmailProvider implements EmailProvider {
@@ -7,7 +8,10 @@ export class FakeEmailProvider implements EmailProvider {
     to: string,
     subject: string,
     body: string,
-  ): Promise<void> {
+  ): Promise<{
+    provider: string;
+    providerId: string;
+  }> {
     console.log('Sending fake email...');
     console.log({ to, subject, body });
 
@@ -18,5 +22,9 @@ export class FakeEmailProvider implements EmailProvider {
     }
 
     console.log('Fake email sent successfully');
+    return {
+      provider: 'FakeEmailProvider',
+      providerId: randomUUID(),
+    };
   }
 }

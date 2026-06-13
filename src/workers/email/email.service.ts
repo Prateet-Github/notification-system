@@ -24,11 +24,19 @@ export class EmailService extends BaseDeliveryService {
       return;
     }
 
-    await this.emailProvider.send(
+    const result = await this.emailProvider.send(
       'test@example.com',
       'Order Placed Email',
       'Your order has been placed.',
     );
+
+    await this.prisma.delivery.update({
+      where: { id: deliveryId },
+      data: {
+        provider: result.provider,
+        providerId: result.providerId,
+      },
+    });
 
     await this.markSent(deliveryId);
   }
