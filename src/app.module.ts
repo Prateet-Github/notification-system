@@ -7,6 +7,7 @@ import { PreferencesModule } from './preferences/preferences.module';
 import { QueueModule } from './queue/queue.module';
 import { WorkersModule } from './workers/workers.module';
 import { ProvidersModule } from './providers/providers.module';
+import { SseModule } from './sse/sse.module';
 import configuration from './config/env.config';
 
 @Module({
@@ -22,6 +23,7 @@ import configuration from './config/env.config';
     QueueModule,
     WorkersModule,
     ProvidersModule,
+    SseModule,
 
   ]
 })
