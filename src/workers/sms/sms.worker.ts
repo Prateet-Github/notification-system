@@ -50,6 +50,7 @@ export class SmsWorker extends WorkerHost {
       },
       data: {
         retryCount: job.attemptsMade,
+        errorDetails: error.message,
       },
     });
 

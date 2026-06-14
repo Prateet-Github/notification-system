@@ -50,6 +50,7 @@ export class EmailWorker extends WorkerHost {
       },
       data: {
         retryCount: job.attemptsMade,
+
       },
     });
 
@@ -60,6 +61,7 @@ export class EmailWorker extends WorkerHost {
         },
         data: {
           status: Status.FAILED,
+          errorDetails: error.message,
         },
       });
 

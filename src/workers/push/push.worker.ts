@@ -50,6 +50,7 @@ export class PushWorker extends WorkerHost {
       },
       data: {
         retryCount: job.attemptsMade,
+        errorDetails: error.message,
       },
     });
 

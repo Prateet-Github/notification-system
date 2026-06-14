@@ -46,6 +46,8 @@ export abstract class BaseDeliveryService {
       data: {
         status: Status.SENT,
         sentAt: new Date(),
+        errorDetails: null,
+        errorCode: null,
       },
     });
   }
