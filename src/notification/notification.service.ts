@@ -78,4 +78,29 @@ export class NotificationService {
     });
   }
 
+  async findByUser(userId: string) {
+    return this.prisma.notification.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        deliveries: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
+
+  async markAsRead(deliveryId: string) {
+    return this.prisma.delivery.update({
+      where: {
+        id: deliveryId,
+      },
+      data: {
+        readAt: new Date(),
+      },
+    });
+  }
+
 }

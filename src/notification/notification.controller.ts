@@ -17,6 +17,23 @@ export class NotificationController {
     return this.notificationService.findAll();
   }
 
+  @Get('user/:userId')
+  findByUser(
+    @Param('userId') userId: string) {
+    return this.notificationService.findByUser(
+      userId,
+    );
+  }
+
+  @Patch(':deliveryId/read')
+  markAsRead(
+    @Param('deliveryId') deliveryId: string,
+  ) {
+    return this.notificationService.markAsRead(
+      deliveryId,
+    );
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.notificationService.findOne(id);
