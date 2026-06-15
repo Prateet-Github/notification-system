@@ -14,11 +14,13 @@ import { PushService } from './push/push.service';
 
 import { InAppWorker } from './in-app/in-app.worker';
 import { InAppService } from './in-app/in-app.service';
+import { SseModule } from '@/sse/sse.module';
 
 @Module({
   imports: [
     PrismaModule,
     ProvidersModule,
+    SseModule,
   ],
   providers: [
     EmailWorker,
