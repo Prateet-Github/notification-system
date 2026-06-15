@@ -103,4 +103,38 @@ export class NotificationService {
     });
   }
 
+  async getUnreadCount(userId: string) {
+    const count = await this.prisma.delivery.count({
+      where: {
+        channel: Channel.IN_APP,
+        readAt: null,
+        notification: {
+          userId,
+        },
+      },
+    });
+
+    return { count };
+  }
+
+  async markAllAsRead(userId: string) {
+    const result = await this.prisma.delivery.updateMany({
+      where: {
+        channel: Channel.IN_APP,
+        readAt: null,
+
+        notification: {
+          userId,
+        },
+      },
+      data: {
+        readAt: new Date(),
+      },
+    });
+
+    return {
+      updated: result.count,
+    };
+  }
+
 }

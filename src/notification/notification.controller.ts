@@ -34,6 +34,24 @@ export class NotificationController {
     );
   }
 
+  @Get('user/:userId/unread-count')
+  getUnreadCount(
+    @Param('userId') userId: string,
+  ) {
+    return this.notificationService.getUnreadCount(
+      userId,
+    );
+  }
+
+  @Patch('user/:userId/read-all')
+  markAllAsRead(
+    @Param('userId') userId: string,
+  ) {
+    return this.notificationService.markAllAsRead(
+      userId,
+    );
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.notificationService.findOne(id);
