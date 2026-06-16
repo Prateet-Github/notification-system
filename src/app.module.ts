@@ -8,6 +8,7 @@ import { QueueModule } from './queue/queue.module';
 import { WorkersModule } from './workers/workers.module';
 import { ProvidersModule } from './providers/providers.module';
 import { SseModule } from './sse/sse.module';
+import { RedisModule } from './redis/redis.module';
 import configuration from './config/env.config';
 
 @Module({
@@ -24,6 +25,7 @@ import configuration from './config/env.config';
     WorkersModule,
     ProvidersModule,
     SseModule,
+    RedisModule,
 
   ]
 })
