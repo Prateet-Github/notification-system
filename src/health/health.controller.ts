@@ -4,6 +4,10 @@ import { Controller, Get } from '@nestjs/common';
 export class HealthController {
   @Get()
   getHealth() {
-    return { status: 'OK' };
+    return {
+      status: 'OK',
+      pid: process.pid,
+      port: process.env.PORT,
+    };
   }
 }

@@ -3,6 +3,8 @@ import { Subject, Observable } from 'rxjs';
 
 @Injectable()
 export class SseService {
+  // for multiple clinets add [] to the value of the map and push to the array instead of next
+  // will check it later on making multiple instances
   private clients = new Map<
     string,
     Subject<MessageEvent>
@@ -12,8 +14,8 @@ export class SseService {
     const subject = new Subject<MessageEvent>();
     this.clients.set(userId, subject);
 
-    console.log('Client connected:', userId);
-    console.log('Total clients:', this.clients.size);
+    // console.log('Client connected:', userId);
+    // console.log('Total clients:', this.clients.size);
 
     return subject.asObservable();
   }
