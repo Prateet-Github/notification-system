@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { QUEUES } from './constants';
 import { QueueRouterService } from './queue-router.service';
 import { PrismaModule } from '../prisma/prisma.module';
+import { getRedisConfig } from '@/config/redis.config';
 
 @Module({
   imports: [
@@ -14,10 +15,7 @@ import { PrismaModule } from '../prisma/prisma.module';
       inject: [ConfigService],
 
       useFactory: (configService: ConfigService) => ({
-        connection: {
-          host: configService.get<string>('redis.host'),
-          port: configService.get<number>('redis.port'),
-        },
+        connection: getRedisConfig(configService),
       }),
     }),
 
