@@ -57,7 +57,7 @@ export class InAppService extends BaseDeliveryService {
     // );
     await this.redisPublisherService.publish(
       'notifications',
-      JSON.stringify({
+      {
         userId:
           deliveryWithNotification!.notification.userId,
 
@@ -66,7 +66,7 @@ export class InAppService extends BaseDeliveryService {
           title: 'Order Placed',
           message: 'Your order has been placed.',
         },
-      }),
+      }
     );
 
     await this.markSent(deliveryId);

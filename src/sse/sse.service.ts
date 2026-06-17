@@ -11,6 +11,10 @@ export class SseService {
   addClient(userId: string): Observable<MessageEvent> {
     const subject = new Subject<MessageEvent>();
     this.clients.set(userId, subject);
+
+    console.log('Client connected:', userId);
+    console.log('Total clients:', this.clients.size);
+
     return subject.asObservable();
   }
 
@@ -24,6 +28,8 @@ export class SseService {
   }
 
   publish(userId: string, payload: any) {
+    // console.log('Publishing to:', userId);
+    // console.log('Client exists:', this.clients.has(userId));
     const client = this.clients.get(userId);
     if (client) {
       client.next({
