@@ -83,6 +83,21 @@ model UserChannel {
   @@unique([userPreferenceId, channel])
 }
 
+// Push Tokens
+
+model PushToken {
+  id String @id @default(uuid())
+
+  userId String
+
+  token String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
 // ENUMS
 
 enum Priority {
