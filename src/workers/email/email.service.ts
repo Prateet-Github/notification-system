@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { EmailProvider } from '@/providers/email/email.provider';
 import { BaseDeliveryService } from '../base/base-delivery.service';
+import { orderPlacedTemplate } from '../../templates/email/order-placed.template';
 
 @Injectable()
 export class EmailService extends BaseDeliveryService {
@@ -26,8 +27,8 @@ export class EmailService extends BaseDeliveryService {
 
     const result = await this.emailProvider.send(
       'prateettiwari29@gmail.com',
-      'Order Placed Email',
-      'Your order has been placed.',
+      'Order Confirmed',
+      orderPlacedTemplate('ORD-12345'),
     );
 
     await this.prisma.delivery.update({
