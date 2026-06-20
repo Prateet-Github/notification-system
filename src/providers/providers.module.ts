@@ -10,6 +10,7 @@ import { FakePushProvider } from './push/fake-push.provider';
 import { InAppProvider } from './in-app/in-app.provider';
 import { FakeInAppProvider } from './in-app/fake-in-app.provider';
 import { ResendEmailProvider } from './email/resend-email.provider';
+import { TwilioSmsProvider } from './sms/twilio-sms.provider';
 
 @Module({
   providers: [
@@ -19,7 +20,7 @@ import { ResendEmailProvider } from './email/resend-email.provider';
     },
     {
       provide: SmsProvider,
-      useClass: FakeSmsProvider,
+      useClass: TwilioSmsProvider,
     },
     {
       provide: PushProvider,

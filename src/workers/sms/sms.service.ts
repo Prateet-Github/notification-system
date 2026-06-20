@@ -24,7 +24,7 @@ export class SmsService extends BaseDeliveryService {
     }
 
     const result = await this.smsProvider.send(
-      '+1234567890',
+      '+919569940915',
       'Order Placed SMS',
       'Your order has been placed.',
     );
