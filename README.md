@@ -36,36 +36,27 @@ Tech Stack
 
 Architecture
 
-                   Nginx
-             (Load Balancer)
-                     │
-     ┌───────────────┼───────────────┐
-     ▼               ▼               ▼
-  NestJS         NestJS         NestJS
- Instance 1     Instance 2     Instance 3
-     │               │               │
-     └───────────────┼───────────────┘
-                     │
-                  Redis
-         (Pub/Sub + BullMQ Backend)
-                     │
-             Notification API
-                     │
-             Create Notification
-                     │
-              Create Deliveries
-                     │
-               Queue Routing
-    email-queue
-    sms-queue
-    push-queue
-    inapp-queue
-                     │
-                  Workers
-                     │
-                 Providers
-                     │
-      Resend   Twilio   SSE   Push
+                        Nginx
+                  (Load Balancer)
+                             │
+        ┌────────────────────┼────────────────────┐
+        ▼                    ▼                    ▼
+    NestJS #1           NestJS #2           NestJS #3
+        │                    │                    │
+        └────────────────────┼────────────────────┘
+                             │
+                          Redis
+                  Pub/Sub + BullMQ
+                             │
+                        Queue Router
+                             │
+      email-queue  sms-queue  push-queue  inapp-queue
+            │          │           │            │
+            ▼          ▼           ▼            ▼
+      EmailWorker SMSWorker PushWorker InAppWorker
+            │          │           │            │
+            ▼          ▼           ▼            ▼
+        Resend      Twilio       FCM          SSE
 
 Current Progress
 
@@ -109,57 +100,13 @@ Infrastructure
 
 Roadmap
 
-* Push Notifications (FCM)
+* Push Notifications (Firebase Cloud Messaging)
 * Dead Letter Queues (DLQ)
 * Idempotency
 * Rate Limiting
 * Delivery Metrics & Observability
 * Distributed Tracing
 
-:::
-This version makes it look like a distributed systems project instead of just a CRUD notification service. The biggest additions are highlighting:
-- Redis Pub/Sub
-- SSE
-- Nginx load balancing
-- Multi-instance architecture
-- Real Resend and Twilio integrations
-Those are the things recruiters and engineers will notice first.
+Status
 
-                   Nginx
-             (Load Balancer)
-                     │
-     ┌───────────────┼───────────────┐
-     ▼               ▼               ▼
-
-  NestJS         NestJS         NestJS
- Instance 1     Instance 2     Instance 3
-     │               │               │
-     └───────────────┼───────────────┘
-                     │
-
-                  Redis
-         (Pub/Sub + BullMQ Backend)
-                     │
-
-             Notification API
-                     │
-             Create Notification
-                     │
-              Create Deliveries
-                     │
-               Queue Routing
-
-    email-queue
-    sms-queue
-    push-queue
-    inapp-queue
-
-                     │
-
-                  Workers
-                     │
-
-                 Providers
-                     │
-
-      Resend   Twilio   SSE   Push
+Work in Progress
