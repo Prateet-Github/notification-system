@@ -9,12 +9,13 @@ import { PushProvider } from './push/push.provider';
 import { FakePushProvider } from './push/fake-push.provider';
 import { InAppProvider } from './in-app/in-app.provider';
 import { FakeInAppProvider } from './in-app/fake-in-app.provider';
+import { ResendEmailProvider } from './email/resend-email.provider';
 
 @Module({
   providers: [
     {
       provide: EmailProvider,
-      useClass: FakeEmailProvider,
+      useClass: ResendEmailProvider,
     },
     {
       provide: SmsProvider,

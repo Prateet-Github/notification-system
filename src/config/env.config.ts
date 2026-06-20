@@ -12,4 +12,7 @@ export default () => ({
     host: process.env.REDIS_HOST!,
     port: parseInt(process.env.REDIS_PORT!, 10),
   },
+  resend: {
+    apiKey: process.env.RESEND_API_KEY,
+  }
 });

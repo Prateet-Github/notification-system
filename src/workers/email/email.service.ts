@@ -25,7 +25,7 @@ export class EmailService extends BaseDeliveryService {
     }
 
     const result = await this.emailProvider.send(
-      'test@example.com',
+      'prateettiwari29@gmail.com',
       'Order Placed Email',
       'Your order has been placed.',
     );
