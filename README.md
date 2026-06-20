@@ -1,75 +1,165 @@
-# Notification System
+Notification System
 
-A scalable notification service built with NestJS, Prisma, PostgreSQL, Redis, and BullMQ.
+A scalable, multi-channel notification platform built with NestJS, PostgreSQL, Redis, BullMQ, and Prisma.
 
-## Features
+Features
 
-- Multi-channel notifications
-  - Email
-  - SMS
-  - Push
-  - In-App
-- User notification preferences
-- Delivery tracking
-- Priority-based processing
-- Queue-driven architecture
-- Delivery-level retries
+* Multi-channel notification delivery
+    * Email (Resend)
+    * SMS (Twilio)
+    * Push Notifications
+    * In-App Notifications
+* User notification preferences
+* Notification history
+* Read / Unread tracking
+* Unread notification counts
+* Priority-based processing
+* Queue-driven architecture
+* Delivery-level retries
+* Real-time notifications using Server-Sent Events (SSE)
+* Redis Pub/Sub for cross-instance event propagation
+* Horizontal scaling support
+* Nginx load balancing
 
-## Tech Stack
+Tech Stack
 
-- NestJS
-- TypeScript
-- Prisma
-- PostgreSQL
-- Redis
-- BullMQ
+* NestJS
+* TypeScript
+* Prisma
+* PostgreSQL
+* Redis
+* BullMQ
+* Server-Sent Events (SSE)
+* Nginx
+* Resend
+* Twilio
 
-## Architecture
+Architecture
 
-```text
-Notification API
-        ↓
-Create Notification
-        ↓
-Create Deliveries
-        ↓
-Queue Routing
+                   Nginx
+             (Load Balancer)
+                     │
+     ┌───────────────┼───────────────┐
+     ▼               ▼               ▼
+  NestJS         NestJS         NestJS
+ Instance 1     Instance 2     Instance 3
+     │               │               │
+     └───────────────┼───────────────┘
+                     │
+                  Redis
+         (Pub/Sub + BullMQ Backend)
+                     │
+             Notification API
+                     │
+             Create Notification
+                     │
+              Create Deliveries
+                     │
+               Queue Routing
+    email-queue
+    sms-queue
+    push-queue
+    inapp-queue
+                     │
+                  Workers
+                     │
+                 Providers
+                     │
+      Resend   Twilio   SSE   Push
 
-email-queue
-sms-queue
-push-queue
-inapp-queue
+Current Progress
 
-        ↓
+Core Platform
 
-Workers
-        ↓
+* Notification creation
+* Delivery record creation
+* User preferences
+* Delivery tracking
+* Priority handling
+* Retry mechanism
 
-Providers
-        ↓
+In-App Notifications
 
-External Channels
-```
+* SSE-based real-time delivery
+* Notification history
+* Read / Unread state management
+* Unread count tracking
+* Redis Pub/Sub integration
+* Multi-instance event delivery
 
-## Status
+Email
 
-Work in Progress
+* Resend integration
+* HTML email templates
+* Provider response tracking
 
-### Current Progress
+SMS
 
-- Notification creation
-- Delivery record creation
-- User preferences
-- Redis setup
-- BullMQ setup
-- Queue architecture design
-- Queue routing
-- Workers
-- Channel providers
-- Retry mechanism
+* Twilio integration
+* Provider response tracking
 
-### Next Steps
+Infrastructure
 
-- Providers
-- Dead Letter Queues (DLQ)
-- Observability & metrics
+* Redis integration
+* BullMQ queue processing
+* Dedicated workers per channel
+* Horizontal scaling support
+* Nginx reverse proxy and load balancing
+* SSE proxy optimization
+
+Roadmap
+
+* Push Notifications (FCM)
+* Dead Letter Queues (DLQ)
+* Idempotency
+* Rate Limiting
+* Delivery Metrics & Observability
+* Distributed Tracing
+
+:::
+This version makes it look like a distributed systems project instead of just a CRUD notification service. The biggest additions are highlighting:
+- Redis Pub/Sub
+- SSE
+- Nginx load balancing
+- Multi-instance architecture
+- Real Resend and Twilio integrations
+Those are the things recruiters and engineers will notice first.
+
+                   Nginx
+             (Load Balancer)
+                     │
+     ┌───────────────┼───────────────┐
+     ▼               ▼               ▼
+
+  NestJS         NestJS         NestJS
+ Instance 1     Instance 2     Instance 3
+     │               │               │
+     └───────────────┼───────────────┘
+                     │
+
+                  Redis
+         (Pub/Sub + BullMQ Backend)
+                     │
+
+             Notification API
+                     │
+             Create Notification
+                     │
+              Create Deliveries
+                     │
+               Queue Routing
+
+    email-queue
+    sms-queue
+    push-queue
+    inapp-queue
+
+                     │
+
+                  Workers
+                     │
+
+                 Providers
+                     │
+
+      Resend   Twilio   SSE   Push
