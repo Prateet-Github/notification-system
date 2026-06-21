@@ -16,6 +16,7 @@ import { InAppWorker } from './in-app/in-app.worker';
 import { InAppService } from './in-app/in-app.service';
 import { SseModule } from '@/sse/sse.module';
 import { RedisModule } from '@/redis/redis.module';
+import { PushTokenModule } from '@/push-token/push-token.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { RedisModule } from '@/redis/redis.module';
     ProvidersModule,
     SseModule,
     RedisModule,
+    PushTokenModule,
   ],
   providers: [
     EmailWorker,

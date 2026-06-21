@@ -31,7 +31,7 @@ import configuration from './config/env.config';
     PushTokenModule,
     FirebaseModule,
 
-  ]
+  ],
 })
 export class AppModule { }
 

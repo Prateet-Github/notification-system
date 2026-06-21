@@ -14,6 +14,9 @@ export abstract class BaseDeliveryService {
         where: {
           id: deliveryId,
         },
+        include: {
+          notification: true,
+        },
       });
 
     if (!delivery) {

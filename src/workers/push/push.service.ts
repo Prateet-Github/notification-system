@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { PushProvider } from '@/providers/push/push.provider';
 import { BaseDeliveryService } from '../base/base-delivery.service';
+import { PushTokenService } from '@/push-token/push-token.service';
 
 @Injectable()
 export class PushService extends BaseDeliveryService {
@@ -11,6 +12,8 @@ export class PushService extends BaseDeliveryService {
 
     @Inject(PushProvider)
     private readonly pushProvider: PushProvider,
+
+    private readonly pushTokenService: PushTokenService,
   ) {
     super(prisma);
   }
@@ -19,17 +22,38 @@ export class PushService extends BaseDeliveryService {
     const delivery = await this.startDelivery(
       deliveryId,
     );
+    console.log(
+      JSON.stringify(delivery, null, 2),
+    );
 
     if (!delivery) {
       return;
     }
 
-    const result = await this.pushProvider.send(
-      'test@example.com',
-      'Order Placed Push',
-      'Your order has been placed.',
-    );
+    // const result = await this.pushProvider.send(
+    //   'test@example.com',
+    //   'Order Placed Push',
+    //   'Your order has been placed.',
+    // );
+    const tokens =
+      await this.pushTokenService.findByUserId(
+        delivery.notification.userId,
+      );
 
+    const token =
+      tokens[tokens.length - 1]?.token;
+
+    if (!token) {
+      throw new Error(
+        `No push token found for user ${delivery.notification.userId}`,
+      );
+    }
+
+    const result = await this.pushProvider.send(
+      token,
+      (delivery.notification.payload as any).title,
+      (delivery.notification.payload as any).message,
+    );
     await this.prisma.delivery.update({
       where: { id: deliveryId },
       data: {
