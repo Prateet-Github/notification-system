@@ -12,8 +12,6 @@ import {
   Messaging,
 } from 'firebase-admin/messaging';
 
-import serviceAccount from '../config/service-account.json';
-
 @Injectable()
 export class FirebaseService {
   private readonly messaging: Messaging;
