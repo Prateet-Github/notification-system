@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Get, Param } from '@nestjs/common';
 import { PushTokenService } from './push-token.service';
 import { CreatePushTokenDto } from './dto/create-push-token.dto';
 
@@ -13,5 +13,14 @@ export class PushTokenController {
     @Body() dto: CreatePushTokenDto,
   ) {
     return this.pushTokenService.create(dto);
+  }
+
+  @Get(':userId')
+  findByUserId(
+    @Param('userId') userId: string,
+  ) {
+    return this.pushTokenService.findByUserId(
+      userId,
+    );
   }
 }

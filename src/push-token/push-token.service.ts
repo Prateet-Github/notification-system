@@ -19,4 +19,12 @@ export class PushTokenService {
       create: dto,
     });
   }
+
+  async findByUserId(userId: string) {
+    return this.prisma.pushToken.findMany({
+      where: {
+        userId,
+      },
+    });
+  }
 }
