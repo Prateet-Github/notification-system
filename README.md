@@ -1,41 +1,43 @@
-Notification System
+# Notification System
 
 A scalable, multi-channel notification platform built with NestJS, PostgreSQL, Redis, BullMQ, and Prisma.
 
-Features
+## Features
 
-* Multi-channel notification delivery
-    * Email (Resend)
-    * SMS (Twilio)
-    * Push Notifications
-    * In-App Notifications
-* User notification preferences
-* Notification history
-* Read / Unread tracking
-* Unread notification counts
-* Priority-based processing
-* Queue-driven architecture
-* Delivery-level retries
-* Real-time notifications using Server-Sent Events (SSE)
-* Redis Pub/Sub for cross-instance event propagation
-* Horizontal scaling support
-* Nginx load balancing
+- Multi-channel notification delivery
+  - Email (Resend)
+  - SMS (Twilio)
+  - Push Notifications (Firebase Cloud Messaging)
+  - In-App Notifications (Server-Sent Events)
+- User notification preferences
+- Notification history
+- Read / Unread tracking
+- Unread notification counts
+- Priority-based processing
+- Queue-driven architecture
+- Delivery-level retries
+- Real-time notifications using Server-Sent Events (SSE)
+- Redis Pub/Sub for cross-instance event propagation
+- Horizontal scaling support
+- Nginx load balancing
 
-Tech Stack
+## Tech Stack
 
-* NestJS
-* TypeScript
-* Prisma
-* PostgreSQL
-* Redis
-* BullMQ
-* Server-Sent Events (SSE)
-* Nginx
-* Resend
-* Twilio
+- NestJS
+- TypeScript
+- Prisma
+- PostgreSQL
+- Redis
+- BullMQ
+- Firebase Cloud Messaging (FCM)
+- Server-Sent Events (SSE)
+- Nginx
+- Resend
+- Twilio
 
-Architecture
+## Architecture
 
+```text
                         Nginx
                   (Load Balancer)
                              │
@@ -48,6 +50,12 @@ Architecture
                           Redis
                   Pub/Sub + BullMQ
                              │
+                    Notification API
+                             │
+                   Create Notification
+                             │
+                    Create Deliveries
+                             │
                         Queue Router
                              │
       email-queue  sms-queue  push-queue  inapp-queue
@@ -57,56 +65,98 @@ Architecture
             │          │           │            │
             ▼          ▼           ▼            ▼
         Resend      Twilio       FCM          SSE
+```
 
-Current Progress
+## Current Progress
 
-Core Platform
+### Core Platform
 
-* Notification creation
-* Delivery record creation
-* User preferences
-* Delivery tracking
-* Priority handling
-* Retry mechanism
+- Notification creation
+- Delivery record creation
+- User preferences
+- Delivery tracking
+- Priority handling
+- Retry mechanism
 
-In-App Notifications
+### In-App Notifications
 
-* SSE-based real-time delivery
-* Notification history
-* Read / Unread state management
-* Unread count tracking
-* Redis Pub/Sub integration
-* Multi-instance event delivery
+- SSE-based real-time delivery
+- Notification history
+- Read / Unread state management
+- Unread count tracking
+- Redis Pub/Sub integration
+- Multi-instance event delivery
 
-Email
+### Email
 
-* Resend integration
-* HTML email templates
-* Provider response tracking
+- Resend integration
+- HTML email templates
+- Provider response tracking
 
-SMS
+### SMS
 
-* Twilio integration
-* Provider response tracking
+- Twilio integration
+- Provider response tracking
 
-Infrastructure
+### Push Notifications
 
-* Redis integration
-* BullMQ queue processing
-* Dedicated workers per channel
-* Horizontal scaling support
-* Nginx reverse proxy and load balancing
-* SSE proxy optimization
+- Firebase Cloud Messaging (FCM) integration
+- Browser push notifications
+- Device token registration
+- Push token persistence
+- Worker-based push delivery
+- Provider response tracking
 
-Roadmap
+### Infrastructure
 
-* Push Notifications (Firebase Cloud Messaging)
-* Dead Letter Queues (DLQ)
-* Idempotency
-* Rate Limiting
-* Delivery Metrics & Observability
-* Distributed Tracing
+- Redis integration
+- BullMQ queue processing
+- Dedicated workers per channel
+- Horizontal scaling support
+- Nginx reverse proxy and load balancing
+- SSE proxy optimization
 
-Status
+## Notification Flow
 
-Work in Progress
+```text
+Client
+   │
+   ▼
+Notification API
+   │
+   ▼
+Create Notification
+   │
+   ▼
+Create Deliveries
+   │
+   ▼
+Queue Router
+   │
+   ├── Email Queue
+   ├── SMS Queue
+   ├── Push Queue
+   └── In-App Queue
+            │
+            ▼
+         Workers
+            │
+            ▼
+        Providers
+            │
+            ▼
+Resend | Twilio | FCM | SSE
+```
+
+## Next
+
+- Dead Letter Queues (DLQ)
+- Idempotency
+- Rate Limiting
+- Delivery Metrics
+- Observability & Monitoring
+- Distributed Tracing
+
+
+
+
