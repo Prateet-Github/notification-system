@@ -10,6 +10,7 @@ import { ProvidersModule } from './providers/providers.module';
 import { SseModule } from './sse/sse.module';
 import { RedisModule } from './redis/redis.module';
 import { PushTokenModule } from './push-token/push-token.module';
+import { FirebaseModule } from './firebase/firebase.module';
 import configuration from './config/env.config';
 
 @Module({
@@ -28,6 +29,7 @@ import configuration from './config/env.config';
     SseModule,
     RedisModule,
     PushTokenModule,
+    FirebaseModule,
 
   ]
 })
