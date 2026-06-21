@@ -1,4 +1,4 @@
-# Notification System
+# Distributed Notification Service
 
 A scalable, multi-channel notification platform built with NestJS, PostgreSQL, Redis, BullMQ, and Prisma.
 
@@ -150,13 +150,7 @@ Resend | Twilio | FCM | SSE
 
 ## Next
 
-- Dead Letter Queues (DLQ)
-- Idempotency
 - Rate Limiting
 - Delivery Metrics
 - Observability & Monitoring
-- Distributed Tracing
-
-
-
 

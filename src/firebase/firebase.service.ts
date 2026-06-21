@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 import {
   initializeApp,
@@ -17,14 +18,27 @@ import serviceAccount from '../config/service-account.json';
 export class FirebaseService {
   private readonly messaging: Messaging;
 
-  constructor() {
+  constructor(private readonly configService: ConfigService) {
     const app =
       getApps().length > 0
         ? getApps()[0]
         : initializeApp({
-          credential: cert(
-            serviceAccount as any,
-          ),
+          credential: cert({
+            projectId:
+              this.configService.get(
+                'firebase.projectId',
+              ),
+
+            clientEmail:
+              this.configService.get(
+                'firebase.clientEmail',
+              ),
+
+            privateKey:
+              this.configService
+                .get('firebase.privateKey')
+                ?.replace(/\\n/g, '\n'),
+          }),
         });
 
     this.messaging = getMessaging(app);
