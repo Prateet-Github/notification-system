@@ -11,6 +11,8 @@ import { InAppProvider } from './in-app/in-app.provider';
 import { FakeInAppProvider } from './in-app/fake-in-app.provider';
 import { ResendEmailProvider } from './email/resend-email.provider';
 import { TwilioSmsProvider } from './sms/twilio-sms.provider';
+import { FirebaseModule } from '@/firebase/firebase.module';
+import { FcmPushProvider } from './push/fcm-push.provider';
 
 @Module({
   providers: [
@@ -24,7 +26,7 @@ import { TwilioSmsProvider } from './sms/twilio-sms.provider';
     },
     {
       provide: PushProvider,
-      useClass: FakePushProvider,
+      useClass: FcmPushProvider,
     },
     {
       provide: InAppProvider,
@@ -32,5 +34,6 @@ import { TwilioSmsProvider } from './sms/twilio-sms.provider';
     },
   ],
   exports: [EmailProvider, SmsProvider, PushProvider, InAppProvider],
+  imports: [FirebaseModule],
 })
 export class ProvidersModule { }
