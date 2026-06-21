@@ -25,14 +25,7 @@ export class RedisSubscriberService implements OnModuleInit {
       'Subscribed to notifications channel',
     );
 
-    // this.redis.on(
-    //   'message',
-    //   (channel, message) => {
-    //     this.logger.log(
-    //       `[${channel}] ${message}`,
-    //     );
-    //   },
-    // );
+
     this.redis.on(
       'message',
       (channel, message) => {
@@ -41,9 +34,6 @@ export class RedisSubscriberService implements OnModuleInit {
         );
 
         const event = JSON.parse(message);
-        // console.log('Parsed event:', event);
-        // console.log('TYPE:', typeof event);
-        // console.log('EVENT:', event);
 
         this.sseService.publish(
           event.userId,

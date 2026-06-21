@@ -4,8 +4,8 @@ export abstract class InAppProvider {
     subject: string,
     body: string,
   ): Promise<
-  {
-    provider: string;
-    providerId: string;
-  }>;
+    {
+      provider: string;
+      providerId: string;
+    }>;
 }

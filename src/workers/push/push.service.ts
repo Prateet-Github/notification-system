@@ -30,11 +30,6 @@ export class PushService extends BaseDeliveryService {
       return;
     }
 
-    // const result = await this.pushProvider.send(
-    //   'test@example.com',
-    //   'Order Placed Push',
-    //   'Your order has been placed.',
-    // );
     const tokens =
       await this.pushTokenService.findByUserId(
         delivery.notification.userId,
@@ -48,12 +43,20 @@ export class PushService extends BaseDeliveryService {
         `No push token found for user ${delivery.notification.userId}`,
       );
     }
+    type NotificationPayload = {
+      title: string;
+      message: string;
+    };
 
-    const result = await this.pushProvider.send(
-      token,
-      (delivery.notification.payload as any).title,
-      (delivery.notification.payload as any).message,
-    );
+    const payload =
+      delivery.notification.payload as NotificationPayload;
+
+    const result =
+      await this.pushProvider.send(
+        token,
+        payload.title,
+        payload.message,
+      );
     await this.prisma.delivery.update({
       where: { id: deliveryId },
       data: {

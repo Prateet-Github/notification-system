@@ -3,7 +3,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { InAppProvider } from '@/providers/in-app/in-app.provider';
 import { BaseDeliveryService } from '../base/base-delivery.service';
-// import { SseService } from '@/sse/sse.service';
 import { RedisPublisherService } from '@/redis/redis.publish.service';
 
 @Injectable()
@@ -13,7 +12,6 @@ export class InAppService extends BaseDeliveryService {
 
     @Inject(InAppProvider)
     private readonly inAppProvider: InAppProvider,
-    // private readonly sseService: SseService,
     private readonly redisPublisherService: RedisPublisherService,
   ) {
     super(prisma);
@@ -47,14 +45,6 @@ export class InAppService extends BaseDeliveryService {
       },
     });
 
-    // this.sseService.publish(
-    //   deliveryWithNotification!.notification.userId,
-    //   {
-    //     id: deliveryId,
-    //     title: 'Order Placed',
-    //     message: 'Your order has been placed.',
-    //   },
-    // );
     await this.redisPublisherService.publish(
       'notifications',
       {

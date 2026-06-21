@@ -6,8 +6,6 @@ export class HealthController {
   getHealth() {
     return {
       status: 'OK',
-      pid: process.pid,
-      port: process.env.PORT,
     };
   }
 }
